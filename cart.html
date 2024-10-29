@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./cart.css" />
+    <link rel="stylesheet" href="./form.css">
+    <link rel="stylesheet" href="./btnLO.css">
+    <link rel="shortcut icon" href="./img/icons.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/basicLightbox/5.0.0/basicLightbox.min.css"
+    />
+  </head>
+  <body class="light">
+    <header class="light" id="main-header">
+      <div class="logo">
+        <a href="./index.html"
+          ><img src="./img/icons.png" alt="" class="ico"
+        /></a>
+        <h4>Bookshelf</h4>
+        <a href="index.html" class="home-link hl" id="home">Home</a>
+        <a href="cart.html" class="cart-link cl" id="cart">Shopping Cart</a>
+      </div>
+      <div class="container">
+        <label class="switch">
+          <input type="checkbox" id="theme-toggle" />
+          <span class="slider"></span>
+          
+        </label>
+        <div class="burger-icon" onclick="openMenu()">&#9776;</div>
+        <div class="container-btn">
+          <button id="btnRegistr" class="registr btnRegistr">
+            Sign Up<img
+              src="./img/arrow_right_icon_125381.svg"
+              alt=""
+              class="arrow-right"
+            />
+          </button>
+          <button id="btnLogout " class="logout hidden btnLogout">Log Out</button>
+        </div>
+      </div>
+    </header>
+    <div class="containers">
+    <div class="container-left-panel">
+        <div class="uk-menu">
+          <div class="cont-supp">
+            <h2 class="supp-title">Support Ukraine</h2>
+            <img src="./img/Vector.svg" alt="gerb" class="vc-gerb" />
+          </div>
+          <div class="save-children">
+            <p>
+              01
+              <a
+                href="https://www.savethechildren.net/what-we-do/emergencies/war-ukraine"
+                target="_blank"
+                ><img src="./img/saveTheChildren.png" alt=""
+              /></a>
+            </p>
+          </div>
+          <div class="hope">
+            <p>
+              02
+              <a
+                href="https://www.projecthope.org/region/europe/ukraine/"
+                target="_blank"
+                ><img src="./img/projectHope.png" alt=""
+              /></a>
+            </p>
+          </div>
+          <div class="m-corps">
+            <p>
+              03
+              <a
+                href="https://internationalmedicalcorps.org/country/ukraine/"
+                target="_blank"
+                ><img src="./img/medicalCorps.png" alt=""
+              /></a>
+            </p>
+          </div>
+          <div class="razom">
+            <p>
+              04
+              <a href="https://www.razomforukraine.org/" target="_blank"
+                ><img src="./img/razom.png" alt=""
+              /></a>
+            </p>
+          </div>
+          <div class="action">
+            <p>
+              05
+              <a href="https://www.msf.org/ukraine" target="_blank"
+                ><img src="./img/action.png" alt=""
+              /></a>
+            </p>
+          </div>
+          <div class="prytula">
+            <p>
+              06
+              <a href="https://prytulafoundation.org/en" target="_blank"
+                ><img src="./img/prytula.png" alt=""
+              /></a>
+            </p>
+          </div>
+
+          <!-- Скрытые пункты -->
+          <div class="hidden-items">
+            <div class="cont-supp">
+              <h2 class="supp-title">Support Ukraine</h2>
+              <img src="./img/Vector.svg" alt="gerb" class="vc-gerb" />
+            </div>
+            <div class="sans">
+              <p>
+                07
+                <a
+                  href="https://www.actionagainsthunger.org/location/europe/ukraine/"
+                  target="_blank"
+                  ><img src="./img/save.png" alt=""
+                /></a>
+              </p>
+            </div>
+            <div class="world-vision">
+              <p>
+                08
+                <a
+                  href="https://www.wvi.org/emergencies/ukraine"
+                  target="_blank"
+                  ><img src="./img/worldVision.png" alt=""
+                /></a>
+              </p>
+            </div>
+            <div class="united24">
+              <p>
+                09
+                <a href="https://u24.gov.ua/uk" target="_blank"
+                  ><img src="./img/united24.png" alt=""
+                /></a>
+              </p>
+            </div>
+          </div>
+          <div class="cont-show-more-btn">
+            <button id="show-more-btn">
+              <img src="./img/uk-menu-down-arrow.svg" alt="" class="img-btn" />
+            </button>
+          </div>
+          <!-- Кнопка для раскрытия меню -->
+        </div>
+      </div>
+    <main>
+      <section>
+        <ul id="shopping-list">
+          <!-- Список покупок будет загружен сюда -->
+        </ul>
+        <p id="empty-message" class="empty-message">
+          Your shopping list is empty.
+        </p>
+      </section>
+      <div class="paginator" onclick="pagination(event)"></div>
+      
+      <section>
+        <button id="clear-list-btn" type="button">Clear Shopping List</button>
+      </section>
+    </div>
+  </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/basicLightbox/5.0.4/basicLightbox.min.js"></script>
+    <!-- Firebase App (всегда необходимо) -->
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+
+    <!-- Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+
+    <!-- Add other Firebase services as needed -->
+    <!-- Например, для работы с Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+
+    <script>
+      // Firebase configuration (замените на ваши данные из консоли Firebase)
+      const firebaseConfig = {
+        apiKey: "AIzaSyCfSBcu3HJUiZtwsqORODPOinXYZ0v4tLs",
+        authDomain: "registration-66643.firebaseapp.com",
+        projectId: "registration-66643",
+        storageBucket: "registration-66643.appspot.com",
+        messagingSenderId: "936305873313",
+        appId: "1:936305873313:web:b5ed76568510342c147be0",
+      };
+
+      // Инициализация Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script src="./cart.js"></script>
+  </body>
+</html>
+
