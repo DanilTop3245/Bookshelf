@@ -801,7 +801,7 @@ body.dark .cart-link {
 
     .book-card {
         margin: 10px;
-        width: 100%;
+        width: 95%;
         max-width: 300px;
         /* Другие стили для карточек */
     }
@@ -906,7 +906,6 @@ body.dark .cart-link {
 
     .basicLightbox--visible .modal-menu-content a,
     .basicLightbox--visible .modal-menu-content button {
-        color: white;
         margin: 10px 0;
         font-size: 18px;
         text-decoration: none;
@@ -923,5 +922,28 @@ body.dark .cart-link {
         background-color: white;
         border: 2px solid black;
         color: black;
+    }
+
+    body.dark .txt-remove {
+        color: white;
+    }
+
+    .logout2 {
+            background-color: #ffffff;
+            /* Цвет фона кнопки "Log Out" */
+            color: rgb(0, 0, 0);
+            /* Цвет текста */
+            border: 1px solid black;
+            padding: 15px;
+            /* Совпадает с кнопкой "Sign In" */
+            cursor: pointer;
+            /* Плавный переход */
+            width: 80%;
+            /* Занимает всю ширину контейнера */
+            border-radius: 20px;
+            font-size: 16px;
+            height: auto;
+            font-weight: 800;
+            margin: 0 auto;
     }
 }

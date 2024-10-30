@@ -69,3 +69,26 @@
     display: block;
     /* Показываем кнопку "Log Out" при наведении на "Sign In" */
 }
+
+@media (max-width: 768px) {
+    .logout {
+            display: none;
+            /* Скрываем кнопку по умолчанию */
+            background-color: #ffffff;
+            /* Цвет фона кнопки "Log Out" */
+            color: rgb(0, 0, 0);
+            /* Цвет текста */
+            border: 1px solid black;
+            padding: 15px;
+            /* Совпадает с кнопкой "Sign In" */
+            cursor: pointer;
+            /* Плавный переход */
+            width: 80%;
+            /* Занимает всю ширину контейнера */
+            border-radius: 20px;
+            font-size: 16px;
+            height: auto;
+            font-weight: 800;
+            margin: 0 auto;
+        }
+}

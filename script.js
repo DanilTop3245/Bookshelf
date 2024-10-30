@@ -25,82 +25,105 @@ showLoader();
 function openMenu() {
   const menuHtml = `
     <div class="modal-menu-content">
-      <button class="close-btn" onclick="closeMenu()">✖</button>
-      <a href="./index.html" class="home-link" id="home">Home</a>
-      <a href="./cart.html" class="cart-link" id="cart">Shopping cart</a>
+      <button class="close-btn" id="closeBtn">✖</button>
+      <a href="./index.html" class="home-link hl2" id="home">Home</a>
+      <a href="./cart.html" class="cart-link cl2" id="cart">Shopping cart</a>
       <button id="btnRegistrModal" class="registr">Sign Up<img src="./img/arrow_right_icon_125381.svg" alt="" class="arrow-right" /></button>
-      <button id="btnLogout" class="logout hidden">Log Out</button>
+      <button id="btnLogout" class="logout2 hidden">Log Out</button>
     </div>`;
 
-  window.instance = basicLightbox.create(menuHtml, {
+  const instance = basicLightbox.create(menuHtml, {
     onShow: (instance) => {
+      console.log("Menu opened");
+
+      // Обработчик для кнопки "Close"
+      const closeBtn = instance.element().querySelector("#closeBtn");
+      closeBtn.addEventListener("click", () => {
+        closeMenu(); // Закрыть меню при нажатии кнопки "Close"
+      });
+
       const btnRegistrModal = instance
         .element()
         .querySelector("#btnRegistrModal");
       btnRegistrModal.addEventListener("click", () => {
-        if (createWindowRegistr()) {
-          updateUIOnLogin();
+        console.log("Sign Up button clicked");
+        createWindowRegistr(); // Вызываем окно регистрации
+      });
+
+      const btnLogout = instance.element().querySelector("#btnLogout");
+      btnLogout.addEventListener("click", handleLogout);
+      const homeLinks = document.querySelector(".hl2");
+      const shoppingCartLinks = document.querySelector(".cl2");
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          isUserLoggedIn = true;
+          btnRegistrModal.style.display = "none";
+          btnLogout.style.display = "block";
+          homeLinks.style.display = "block";
+          shoppingCartLinks.style.display = "block";
+        } else {
+          isUserLoggedIn = false;
+          btnLogout.style.display = "none";
+          btnRegistrModal.style.display = "block";
+          homeLinks.style.display = "none"
+          shoppingCartLinks.style.display = "none"
         }
       });
-      document
-        .getElementById("btnLogout")
-        .addEventListener("click", handleLogout);
     },
   });
-  instance.show();
+
+  instance.show(); // Показываем модальное окно
+  window.instance = instance; // Сохраняем экземпляр модального окна для закрытия
 }
 
 function closeMenu() {
-  if (window.instance) instance.close();
-}
-
-firebase.auth().onAuthStateChanged((user) => {
-  const signInButton = document.getElementById("btnRegistrModal");
-  const logoutButton = document.getElementById("btnLogout");
-
-  if (user) {
-    isUserLoggedIn = true;
-
-    // Отображаем логин и скрываем кнопку "Sign Up"
-    signInButton.textContent = user.displayName || "Log Out";
-    signInButton.style.display = "none"; // Скрываем кнопку "Sign Up"
-
-    // Показываем кнопку "Log Out" и добавляем обработчик события
-    logoutButton.style.display = "block";
-    logoutButton.addEventListener("click", handleLogout);
-  } else {
-    isUserLoggedIn = false;
-
-    // Возвращаем текст и показываем кнопку "Sign Up"
-    signInButton.innerHTML =
-      'Sign Up <img src="./img/arrow_right_icon_125381.svg" alt="" class="arrow-right">';
-    signInButton.style.display = "block"; // Показываем кнопку "Sign Up"
-
-    // Скрываем кнопку "Log Out"
-    logoutButton.style.display = "none";
-    logoutButton.removeEventListener("click", handleLogout); // Удаляем обработчик, если пользователь вышел
+  if (window.instance) {
+    window.instance.close(); // Закрываем модальное окно
   }
-});
-
-function handleLogout() {
-  firebase
-    .auth()
-    .signOut()
-    .then(() => {
-      const signInButton = document.getElementById("btnRegistrModal");
-      const logoutButton = document.getElementById("btnLogout");
-
-      // Восстанавливаем кнопку "Sign Up" и скрываем "Log Out"
-      signInButton.innerHTML =
-        'Sign Up <img src="./img/arrow_right_icon_125381.svg" alt="" class="arrow-right">';
-      signInButton.style.display = "block"; // Показываем кнопку "Sign Up"
-      logoutButton.style.display = "none";
-    });
 }
 
+// firebase.auth().onAuthStateChanged((user) => {
+//   const signInButton = document.getElementById("btnRegistrModal");
+//   const logoutButton = document.getElementById("btnLogout");
 
+//   if (user) {
+//     isUserLoggedIn = true;
 
+//     // Отображаем логин и скрываем кнопку "Sign Up"
+//     signInButton.style.display = "none"; // Скрываем кнопку "Sign Up"
 
+//     // Показываем кнопку "Log Out" и добавляем обработчик события
+//     logoutButton.style.display = "block";
+//     logoutButton.addEventListener("click", handleLogout);
+//   } else {
+//     isUserLoggedIn = false;
+
+//     // Возвращаем текст и показываем кнопку "Sign Up"
+//     signInButton.innerHTML =
+//       'Sign Up <img src="./img/arrow_right_icon_125381.svg" alt="" class="arrow-right">';
+//     signInButton.style.display = "block"; // Показываем кнопку "Sign Up"
+
+//     // Скрываем кнопку "Log Out"
+//     logoutButton.style.display = "none";
+//     logoutButton.removeEventListener("click", handleLogout); // Удаляем обработчик, если пользователь вышел
+//   }
+// });
+
+// function handleLogout() {
+//   firebase
+//     .auth()
+//     .signOut()
+//     .then(() => {
+//       const signInButton = document.getElementById("btnRegistrModal");
+//       const logoutButton = document.getElementById("btnLogout");
+
+//       // Восстанавливаем кнопку "Sign Up" и скрываем "Log Out"
+//       signInButton.innerHTML =
+//         'Sign Up <img src="./img/arrow_right_icon_125381.svg" alt="" class="arrow-right">';
+//       signInButton.style.display = "block"; // Показываем кнопку "Sign Up"
+//       logoutButton.style.display = "none";
+//     });
+// }
 
 // function updateUIOnLogin(user) {
 //   const signInButton = document.getElementById("btnRegistr");
@@ -130,7 +153,6 @@ function handleLogout() {
 //     addToCartBtn.classList.add("hidden"); //скрываем кнопку добавить в корзину если пользователь не зарегистрирован
 //   }
 // });
-
 
 // Theme Toggle Functionality
 toggleSwitch.addEventListener("change", function () {
@@ -192,8 +214,7 @@ function fetchBooksByCategory(category) {
   return fetch(`
     https://books-backend.p.goit.global/books/category?category=${encodeURIComponent(
       category
-    )}`
-  ).then((resp) => {
+    )}`).then((resp) => {
     if (!resp.ok) {
       throw new Error(resp.statusText);
     }
@@ -206,11 +227,12 @@ function fetchBooksByCategory(category) {
 function createBookCard({ book_image, title, author, _id, apple_books_link }) {
   return `
     <div class="book-card js-product-item" data-id="${_id}">
-      <img src="${book_image ? book_image : "./img/book.jpg"}" alt="${title}" width="190" />
+      <img src="${
+        book_image ? book_image : "./img/book.jpg"
+      }" alt="${title}" width="190" />
       <h4>${title}</h4>
       <span><i>${author}</i></span>
-    </div>`
-  ;
+    </div>`;
 }
 
 // Modify the handlerClick function to pull Apple Books link
@@ -326,12 +348,6 @@ function handlerClick(evt) {
     });
 }
 
-
-
-
-
-
-
 // Функции для работы с localStorage
 function setToLocalStorage(book) {
   const localArr = getFromLocalStorage();
@@ -346,12 +362,12 @@ function removeFromCart(id) {
 }
 
 function addToLocalStorage(arr) {
-  localStorage.setItem('shoppingList', JSON.stringify(arr));
+  localStorage.setItem("shoppingList", JSON.stringify(arr));
 }
 
 function getFromLocalStorage() {
   try {
-    const data = localStorage.getItem('shoppingList');
+    const data = localStorage.getItem("shoppingList");
     return data ? JSON.parse(data) : [];
   } catch (error) {
     console.error(error.message);
@@ -362,9 +378,6 @@ function checkBookInLocalStorage(id) {
   const currentList = getFromLocalStorage();
   return currentList.some((book) => book._id === id);
 }
-
-
-
 
 // Function to Clear Current Books
 function clearBooks() {
@@ -477,7 +490,7 @@ function renderAllCategories(categories) {
       })
       .catch((error) => {
         console.error(
-          Error `fetching books for category "${category.list_name}"`,
+          Error`fetching books for category "${category.list_name}"`,
           error
         );
       });
@@ -528,7 +541,7 @@ function handleCategoryClicks() {
           })
           .catch((error) => {
             console.error(
-              Error `fetching books for category "${selectedCategory}"`,
+              Error`fetching books for category "${selectedCategory}"`,
               error
             );
             bookListContainer.innerHTML = `<p>Error loading books for "${selectedCategory}". Please try again later.</p>`;
@@ -590,8 +603,8 @@ const signInButton = document.getElementById("btnRegistr");
 signInButton.addEventListener("click", createWindowRegistr);
 
 function createWindowRegistr() {
-  instance = basicLightbox.create(
-    `
+  // Создаем окно модалки
+  const registrationHtml = `
     <div class="auth-container">
       <form action="" class="form-reg" id="registration-form">
         <div class="container-cross">
@@ -605,32 +618,42 @@ function createWindowRegistr() {
         <button type="submit">SIGN UP</button>
         <p class="registration-message" id="registration-message"></p>
         <p>
-        Already have an account? <a href="#" id="switch-to-signin">Sign In</a>
+          Already have an account? <a href="#" id="switch-to-signin">Sign In</a>
         </p>
       </form>
-    </div>`
-    ,
-    {
-      onShow: (instance) => {
-        instance.element().style.backgroundColor = "rgb(79, 46, 232)";
-      },
-      closable: false, // Отключаем закрытие модалки при клике за её пределами
-    }
-  );
+    </div>`;
+
+  instance = basicLightbox.create(registrationHtml, {
+    onShow: (instance) => {
+      instance.element().style.backgroundColor = "rgb(79, 46, 232)";
+
+      // Получаем форму и добавляем обработчик события submit
+      const form = instance.element().querySelector("#registration-form");
+      if (form) {
+        form.addEventListener("submit", handleRegistration);
+      } else {
+        console.error("Registration form not found");
+      }
+
+      // Обработчик для переключения на форму входа
+      const switchToSignIn = instance
+        .element()
+        .querySelector("#switch-to-signin");
+      if (switchToSignIn) {
+        switchToSignIn.addEventListener("click", function (e) {
+          e.preventDefault();
+          instance.close(); // Закрываем модалку
+          createSignInWindow(); // Открываем окно входа
+        });
+      } else {
+        console.error("Switch to Sign In link not found");
+      }
+    },
+    closable: false,
+  });
 
   // Отображаем окно
   instance.show();
-
-  // Получаем форму и добавляем обработчик события submit
-  const form = document.getElementById("registration-form");
-  form.addEventListener("submit", handleRegistration);
-
-  // Обработчик для переключения на форму входа
-  document.getElementById("switch-to-signin").addEventListener("click", function(e) {
-    e.preventDefault();
-    instance.close(); // Закрываем модалку
-    createSignInWindow(); // Открываем окно входа
-  });
 }
 
 // Функция для создания окна входа
@@ -652,8 +675,7 @@ function createSignInWindow() {
         Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a>
       </p>
       </form>
-    </div>`
-    ,
+    </div>`,
     {
       onShow: (instance) => {
         instance.element().style.backgroundColor = "rgb(79, 46, 232)";
@@ -670,11 +692,13 @@ function createSignInWindow() {
   signinForm.addEventListener("submit", handleSignIn);
 
   // Обработчик для переключения на форму регистрации
-  document.getElementById("switch-to-signup").addEventListener("click", function(e) {
-    e.preventDefault();
-    instance.close(); // Закрываем модалку
-    createWindowRegistr(); // Открываем окно регистрации
-  });
+  document
+    .getElementById("switch-to-signup")
+    .addEventListener("click", function (e) {
+      e.preventDefault();
+      instance.close(); // Закрываем модалку
+      createWindowRegistr(); // Открываем окно регистрации
+    });
 }
 
 // Обработчик отправки формы с Firebase для регистрации
@@ -717,7 +741,7 @@ function handleRegistration(event) {
     .catch((error) => {
       messageEl.textContent = "Error: " + error.message;
       messageEl.style.color = "red";
-    });  
+    });
 }
 
 // Обработчик отправки формы с Firebase для входа
@@ -804,10 +828,6 @@ firebase.auth().onAuthStateChanged((user) => {
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     isUserLoggedIn = true;
-    const buttonRegChangeLogOut = document.querySelector(".registr");
-    buttonRegChangeLogOut.element.remove("registr");
-    buttonRegChangeLogOut.classList.add("logout");
-    buttonRegChangeLogOut.textContent = "Log Out";
     updateUIOnLogin(user);
   } else {
     isUserLoggedIn = false;

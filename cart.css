@@ -226,8 +226,8 @@ body.dark .book-info p {
     }
 
     .book-item {
-        width: 95%;
-        height: 300px;
+        width: 90%;
+        height: auto;
     }
 
     .empty-message {
