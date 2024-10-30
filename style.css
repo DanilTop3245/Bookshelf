@@ -833,6 +833,10 @@ body.dark .txt-remove {
         overflow-y: scroll;
     }
 
+    .uk-menu {
+        width: 80%;
+    }
+
     .basicLightbox {
         display: flex !important;
         /* Убедимся, что используется flexbox */
