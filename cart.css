@@ -211,11 +211,8 @@ body.dark .book-info p {
 }
 
 .delete-book-btn {
-    border: 1px solid black;
-    background-color: #4F2EE8;
     border-radius: 50px;
-    width: 28px;
-    padding: 5px;
+    width: 24px;
 }
 
 .delete-book-btn:hover {
@@ -229,7 +226,16 @@ body.dark .book-info p {
 
 .container-delBook-btn {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
+}
+
+.title-in-cart {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    overflow-wrap: break-word;
 }
 
 @media (max-width: 768px) {

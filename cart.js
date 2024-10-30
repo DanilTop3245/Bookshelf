@@ -93,16 +93,17 @@ function renderShoppingList() {
           book.book_image ? book.book_image : "./img/book.jpg"
         }" alt="${book.title}" width="100" height="180"/>
         <div class="book-info">
-          <h2>${book.title}</h2>
+          <div class="container-delBook-btn">
+            <h2 class="title-in-cart">${book.title}</h2>
+            <img src="./img/deleteBook.svg" alt="del" class="delete-book-btn">
+          </div>
           <p><strong>${book.author}</strong></p>
           <p>${
             book.description
               ? book.description
               : "No information about this book. You can try to search for it on other sourses."
           }</p>
-          <div class="container-delBook-btn">
-            <img src="./img/deleteBook.svg" alt="del" class="delete-book-btn">
-          </div>
+          
         </div>
       `;
 

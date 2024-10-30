@@ -65,7 +65,7 @@ function openMenu() {
           isUserLoggedIn = false;
           btnLogout.style.display = "none";
           btnRegistrModal.style.display = "block";
-          homeLinks.style.display = "none"
+          homeLinks.style.display = "none";
           homeLinks.style.display = "none";
           shoppingCartLinks.style.display = "none";
         }
@@ -76,8 +76,6 @@ function openMenu() {
   instance.show(); // Показываем модальное окно
   window.instance = instance; // Сохраняем экземпляр модального окна для закрытия
 }
-
-
 
 function closeMenu() {
   if (window.instance) {
@@ -277,9 +275,14 @@ function handlerClick(evt) {
       // Создание модального окна
       const instance = basicLightbox.create(
         `
+        <div class="modal-main ${currentTheme}">
+        <div class="cont-cross">
+          <img src="./img/cross.svg" alt="" class="close-btn-2" id="closeBtn">
+        </div>
         <div class="modal ${currentTheme}" id="modals-book">
           <div class="cont-modal ${currentTheme}">
            <div class="img-in-modal">
+           
              <img src="${book.book_image}" alt="${book.title}">
            </div>
            <div class="desc-block">
@@ -317,11 +320,15 @@ function handlerClick(evt) {
              <p class="txt-remove hidden">
                Congratulations! You have added the book to the shopping list. To delete, press the button “Remove from the shopping list”.
              </p>
+         </div>
          </div>`
       );
 
       instance.show();
-
+      const closeBtn = document.querySelector("#closeBtn");
+      closeBtn.addEventListener("click", () => {
+        instance.close();
+      });
       // Далее добавляем обработчики для кнопок "Add" и "Remove" только если пользователь авторизован
       if (isUserLoggedIn) {
         const btnAddEl = document.querySelector("#add");

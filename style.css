@@ -599,21 +599,10 @@ input:checked+.slider:before {
 }
 
 
+
 .desc-in-modal>span {
     font-size: 12px;
     color: rgba(180, 175, 175, 1);
-}
-
-.modal.light {
-    background-color: white;
-    border: 2px solid black;
-    color: black;
-}
-
-.modal.dark {
-    background-color: #1e1e24;
-    border: 2px solid white;
-    color: white;
 }
 
 .desc-block {
@@ -855,11 +844,9 @@ body.dark .txt-remove {
         /* Закругление углов */
         padding: 20px;
         /* Отступы внутри */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         /* Тень */
         max-width: 80%;
         margin: 0 auto;
-
     }
 
     .registr {
@@ -920,13 +907,13 @@ body.dark .txt-remove {
         text-align: center;
     }
 
-    .modal.dark {
+    .modal-main.dark {
         background-color: #1e1e24;
         border: 2px solid white;
         color: white;
     }
 
-    .modal.light {
+    .modal-main.light {
         background-color: white;
         border: 2px solid black;
         color: black;
@@ -937,21 +924,54 @@ body.dark .txt-remove {
     }
 
     .logout2 {
-            background-color: #ffffff;
-            /* Цвет фона кнопки "Log Out" */
-            color: rgb(0, 0, 0);
-            /* Цвет текста */
-            border: 1px solid black;
-            padding: 15px;
-            /* Совпадает с кнопкой "Sign In" */
-            cursor: pointer;
-            /* Плавный переход */
-            width: 80%;
-            /* Занимает всю ширину контейнера */
-            border-radius: 20px;
-            font-size: 16px;
-            height: auto;
-            font-weight: 800;
-            margin: 0 auto;
+        background-color: #ffffff;
+        /* Цвет фона кнопки "Log Out" */
+        color: rgb(0, 0, 0);
+        /* Цвет текста */
+        border: 1px solid black;
+        padding: 15px;
+        /* Совпадает с кнопкой "Sign In" */
+        cursor: pointer;
+        /* Плавный переход */
+        width: 80%;
+        /* Занимает всю ширину контейнера */
+        border-radius: 20px;
+        font-size: 16px;
+        height: auto;
+        font-weight: 800;
+        margin: 0 auto;
     }
+
+    .basicLightbox .modal-main {
+        max-height: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        max-width: 80%;
+
+    }
+}
+
+.modal-main {
+    max-height: 100%;
+    background-color: white;
+    border: 1px solid black;
+    /* Цвет фона модалки */
+    border-radius: 8px;
+    /* Закругление углов */
+    /* Отступы внутри */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
+    margin: 0 auto;
+    border: 2px solid black;
+}
+
+.cont-cross {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.close-btn-2 {
+    width: 20px;
+    cursor: pointer;
+    margin: 10px;
 }
