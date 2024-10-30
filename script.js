@@ -20,7 +20,6 @@ function hideLoader() {
 }
 
 // Initial Loader Display
-showLoader();
 
 function openMenu() {
   const menuHtml = `
@@ -156,47 +155,51 @@ function closeMenu() {
 // });
 
 // Theme Toggle Functionality
-toggleSwitch.addEventListener("change", function () {
-  if (this.checked) {
-    document.body.classList.remove("light");
-    document.body.classList.add("dark");
-    header.classList.remove("light");
-    header.classList.add("dark");
-    chapters.forEach(function (chapt) {
-      chapt.classList.add("dark");
-      chapt.classList.remove("light");
-    });
-    document.querySelectorAll(".see-more").forEach((button) => {
-      button.classList.remove("light");
-      button.classList.add("dark");
-    });
 
-    // Добавляем класс для темы в модальное окно, если оно существует
-    if (modal) {
-      modal.classList.remove("light");
-      modal.classList.add("dark");
-    }
-  } else {
-    document.body.classList.remove("dark");
-    document.body.classList.add("light");
-    header.classList.remove("dark");
-    header.classList.add("light");
-    chapters.forEach(function (chapt) {
-      chapt.classList.remove("dark");
-      chapt.classList.add("light");
-    });
-    document.querySelectorAll(".see-more").forEach((button) => {
-      button.classList.remove("dark");
-      button.classList.add("light");
-    });
+// Function to Save Theme Preference in Local Storage
+function saveThemePreference(theme) {
+  localStorage.setItem("theme", theme);
+}
 
-    // Убираем класс для темы в модальном окне, если оно существует
-    if (modal) {
-      modal.classList.remove("dark");
-      modal.classList.add("light");
-    }
+// Функция для применения темы
+function applyTheme(theme) {
+  document.body.classList.toggle("dark", theme === "dark");
+  document.body.classList.toggle("light", theme === "light");
+  header.classList.toggle("dark", theme === "dark");
+  header.classList.toggle("light", theme === "light");
+
+  chapters.forEach(function (chapt) {
+    chapt.classList.toggle("dark", theme === "dark");
+    chapt.classList.toggle("light", theme === "light");
+  });
+
+  document.querySelectorAll(".see-more").forEach((button) => {
+    button.classList.toggle("dark", theme === "dark");
+    button.classList.toggle("light", theme === "light");
+  });
+
+  if (modal) {
+    modal.classList.toggle("dark", theme === "dark");
+    modal.classList.toggle("light", theme === "light");
   }
+
+  // Обновляем положение переключателя
+  toggleSwitch.checked = theme === "dark";
+}
+
+// Загружаем предпочтения темы при загрузке страницы
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme") || "light"; // По умолчанию светлая тема
+  applyTheme(savedTheme);
 });
+
+// Переключаем тему и сохраняем предпочтение
+toggleSwitch.addEventListener("change", function () {
+  const newTheme = this.checked ? "dark" : "light";
+  applyTheme(newTheme);
+  saveThemePreference(newTheme);
+});
+showLoader();
 
 // Function to Fetch Categories
 function fetchCategories() {
@@ -243,18 +246,13 @@ bookListContainer.addEventListener("click", handlerClick);
 function handlerClick(evt) {
   const currentProduct = evt.target.closest(".js-product-item");
 
-  if (!currentProduct) {
-    return;
-  }
+  if (!currentProduct) return;
 
   const bookId = currentProduct.dataset.id;
 
-  // Fetch book details from the backend
   fetch(`https://books-backend.p.goit.global/books/${bookId}`)
     .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to fetch book details");
-      }
+      if (!response.ok) throw new Error("Failed to fetch book details");
       return response.json();
     })
     .then((book) => {
@@ -266,70 +264,72 @@ function handlerClick(evt) {
       const currentTheme = document.body.classList.contains("dark")
         ? "dark"
         : "light";
-
       const amazonIcon =
         currentTheme === "dark"
           ? "./img/amazon_white.png"
           : "./img/amazon_black.png";
+      const crossIcon =
+        currentTheme === "dark" ? "./img/cross_white.svg" : "./img/cross.svg";
 
-      // Создание модального окна
       const instance = basicLightbox.create(
         `
         <div class="modal-main ${currentTheme}">
-        <div class="cont-cross">
-          <img src="./img/cross.svg" alt="" class="close-btn-2" id="closeBtn">
-        </div>
-        <div class="modal ${currentTheme}" id="modals-book">
-          <div class="cont-modal ${currentTheme}">
-           <div class="img-in-modal">
-           
-             <img src="${book.book_image}" alt="${book.title}">
-           </div>
-           <div class="desc-block">
-             <div class="desc-in-modal">
-               <h2>${book.title}</h2>
-               <span><i>${book.author}</i></span>
-               <p>${
-                 book.description
-                   ? book.description
-                   : "No information about this book"
-               }</p>
-             </div>
-             <div class="book-site-container">
-               <a href="${book.amazon_product_url}" target="_blank">
-                 <img src="${amazonIcon}" alt="Amazon" class="amazon-icon">
-               </a>
-               ${
-                 appleLink
-                   ? `<a href="${appleLink}" target="_blank"><img src="./img/apple_book.svg" alt="" class="apple-book"></a>`
-                   : "<span>Apple Books не доступен</span>"
-               }
-             </div>
-             
-           </div>
-           
-           </div>
-           ${
-             isUserLoggedIn
-               ? `<button type="button" class="modal-book-btn hidden btn-add" id="add">Add to shopping list</button>`
-               : ""
-           }
-             <button type="button" class="modal-book-btn hidden" id="remove">
-               Remove from the shopping list
-             </button>
-             <p class="txt-remove hidden">
-               Congratulations! You have added the book to the shopping list. To delete, press the button “Remove from the shopping list”.
-             </p>
-         </div>
-         </div>`
+          <div class="cont-cross">
+            <img src="${crossIcon}" alt="Close" class="close-btn-2" id="closeBtn">
+          </div>
+          <div class="modal ${currentTheme}" id="modals-book">
+            <div class="cont-modal ${currentTheme}">
+              <div class="img-in-modal">
+                <img src="${book.book_image}" alt="${book.title}">
+              </div>
+              <div class="desc-block">
+                <div class="desc-in-modal">
+                  <h2>${book.title}</h2>
+                  <span><i>${book.author}</i></span>
+                  <p>${
+                    book.description
+                      ? book.description
+                      : "No information about this book"
+                  }</p>
+                </div>
+                <div class="book-site-container">
+                  <a href="${book.amazon_product_url}" target="_blank">
+                    <img src="${amazonIcon}" alt="Amazon" class="amazon-icon">
+                  </a>
+                  ${
+                    appleLink
+                      ? `<a href="${appleLink}" target="_blank"><img src="./img/apple_book.svg" alt="Apple Books" class="apple-book"></a>`
+                      : "<span>Apple Books не доступен</span>"
+                  }
+                </div>
+                ${
+                  isUserLoggedIn
+                    ? `<button type="button" class="modal-book-btn hidden btn-add" id="add">Add to shopping list</button>`
+                    : ""
+                }
+                <button type="button" class="modal-book-btn hidden" id="remove">
+                  Remove from the shopping list
+                </button>
+                <p class="txt-remove hidden">
+                  Congratulations! You have added the book to the shopping list. To delete, press the button “Remove from the shopping list”.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>`
       );
 
       instance.show();
+
       const closeBtn = document.querySelector("#closeBtn");
       closeBtn.addEventListener("click", () => {
         instance.close();
       });
-      // Далее добавляем обработчики для кнопок "Add" и "Remove" только если пользователь авторизован
+
+      // Логирование текущей темы и иконки для отладки
+      console.log("Current theme:", currentTheme);
+      console.log("Cross icon path:", crossIcon);
+
       if (isUserLoggedIn) {
         const btnAddEl = document.querySelector("#add");
         const btnRemoveEl = document.querySelector("#remove");
@@ -361,6 +361,7 @@ function handlerClick(evt) {
       console.error("Error fetching book details:", error);
     });
 }
+
 
 // Функции для работы с localStorage
 function setToLocalStorage(book) {

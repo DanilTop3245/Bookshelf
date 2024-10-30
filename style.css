@@ -919,6 +919,24 @@ body.dark .txt-remove {
         color: black;
     }
 
+    .modal.dark {
+        background-color: #1e1e24;
+        color: white;
+    }
+
+    .modal.light {
+        background-color: white;
+        color: black;
+    }
+
+    .modal-main.dark .close-btn-2 {
+        fill: white;
+    }
+
+    .modal-main.light .close-btn-2 {
+        fill: black;
+    }
+
     body.dark .txt-remove {
         color: white;
     }

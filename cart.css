@@ -227,6 +227,7 @@ body.dark .book-info p {
 .container-delBook-btn {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
 }
 
 .title-in-cart {

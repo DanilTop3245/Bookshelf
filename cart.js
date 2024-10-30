@@ -141,30 +141,31 @@ function clearShoppingList() {
   location.reload();
 }
 
-// Переключение темы
-function toggleTheme() {
-  const body = document.body;
-  const themeToggle = document.getElementById("theme-toggle");
-  const isDarkMode = localStorage.getItem("darkMode") === "enabled";
+const body = document.body;
+const toggleSwitch = document.getElementById("theme-toggle");
 
-  if (isDarkMode) {
-    body.classList.add("dark");
-    themeToggle.checked = true;
-  } else {
-    body.classList.remove("dark");
-    themeToggle.checked = false;
-  }
+// Функция для применения темы
+function applyTheme(theme) {
+  body.classList.toggle("dark", theme === "dark");
+  body.classList.toggle("light", theme === "light");
 
-  themeToggle.addEventListener("change", function () {
-    if (themeToggle.checked) {
-      body.classList.add("dark");
-      localStorage.setItem("darkMode", "enabled");
-    } else {
-      body.classList.remove("dark");
-      localStorage.setItem("darkMode", "disabled");
-    }
-  });
+  // Обновляем положение переключателя
+  toggleSwitch.checked = theme === "dark";
 }
+
+// Загружаем предпочтения темы при загрузке страницы
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme") || "light"; // По умолчанию светлая тема
+  applyTheme(savedTheme);
+});
+
+// Обработчик переключения темы
+toggleSwitch.addEventListener("change", function () {
+  const newTheme = this.checked ? "dark" : "light";
+  applyTheme(newTheme);
+  localStorage.setItem("theme", newTheme);
+});
+
 
 document.getElementById("show-more-btn").addEventListener("click", function () {
   const hiddenItems = document.querySelector(".hidden-items");
