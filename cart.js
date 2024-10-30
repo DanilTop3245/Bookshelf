@@ -82,26 +82,56 @@ function renderShoppingList() {
   if (shoppingList.length === 0) {
     emptyMessage.style.visibility = "visible";
     clearListBtn.style.display = "none";
-    // Показываем сообщение, если список пуст
   } else {
     clearListBtn.style.display = "flex";
-    emptyMessage.style.visibility = "hidden"; // Скрываем сообщение
-    shoppingList.forEach((book) => {
-      shoppingListContainer.innerHTML += `
-        <li class="book-item">
-          <img src="${
-            book.book_image ? book.book_image : "./img/book.jpg"
-          }" alt="${book.title}" />
-          <div class="book-info">
-            <h2>${book.title}</h2>
-            <p><strong>${book.author}</strong></p>
-            <p>${book.description}</p>
+    emptyMessage.style.visibility = "hidden";
+    shoppingList.forEach((book, index) => {
+      const bookItem = document.createElement("li");
+      bookItem.className = "book-item";
+      bookItem.innerHTML = `
+        <img src="${
+          book.book_image ? book.book_image : "./img/book.jpg"
+        }" alt="${book.title}" width="100" height="180"/>
+        <div class="book-info">
+          <h2>${book.title}</h2>
+          <p><strong>${book.author}</strong></p>
+          <p>${
+            book.description
+              ? book.description
+              : "No information about this book. You can try to search for it on other sourses."
+          }</p>
+          <div class="container-delBook-btn">
+            <img src="./img/deleteBook.svg" alt="del" class="delete-book-btn">
           </div>
-        </li>
+        </div>
       `;
+
+      // Добавляем обработчик для кнопки "Delete Book"
+      const deleteButton = bookItem.querySelector(".delete-book-btn");
+      deleteButton.addEventListener("click", () => deleteBook(index));
+
+      shoppingListContainer.appendChild(bookItem);
     });
   }
 }
+
+// Функция для удаления книги
+function deleteBook(index) {
+  const shoppingList = getFromLocalStorage();
+  shoppingList.splice(index, 1); // Удаляем книгу по индексу
+  saveToLocalStorage(shoppingList); // Сохраняем обновленный список в localStorage
+  renderShoppingList(); // Перерендериваем список
+}
+
+// Функции для работы с localStorage
+function getFromLocalStorage() {
+  return JSON.parse(localStorage.getItem("shoppingList") || "[]");
+}
+
+function saveToLocalStorage(shoppingList) {
+  localStorage.setItem("shoppingList", JSON.stringify(shoppingList));
+}
+
 
 // Функция для очистки списка покупок
 function clearShoppingList() {

@@ -286,7 +286,11 @@ function handlerClick(evt) {
              <div class="desc-in-modal">
                <h2>${book.title}</h2>
                <span><i>${book.author}</i></span>
-               <p>${book.description}</p>
+               <p>${
+                 book.description
+                   ? book.description
+                   : "No information about this book"
+               }</p>
              </div>
              <div class="book-site-container">
                <a href="${book.amazon_product_url}" target="_blank">
