@@ -21,6 +21,33 @@ function hideLoader() {
 // Initial Loader Display
 showLoader();
 
+function openMenu() {
+  const menuHtml = `
+    <div class="modal-menu-content">
+      <button class="close-btn" onclick="closeMenu()">✖</button>
+      <a href="./index.html" class="home-link">Home</a>
+      <a href="./cart.html" class="cart-link">Shopping cart</a>
+      <button id="btnRegistrModal" class="registr">Sing Up<img src="./img/arrow_right_icon_125381.svg" alt="" class="arrow-right" /></button>
+      <button id="btnLogout" class="logout">Выйти</button>
+    </div>`;
+
+  window.instance = basicLightbox.create(menuHtml, {
+    onShow: (instance) => {
+      const btnRegistrModal = instance
+        .element()
+        .querySelector("#btnRegistrModal");
+      btnRegistrModal.addEventListener("click", () => {
+        createWindowRegistr();
+      });
+    },
+  });
+  instance.show();
+}
+
+function closeMenu() {
+  if (window.instance) instance.close();
+}
+
 // Theme Toggle Functionality
 toggleSwitch.addEventListener("change", function () {
   if (this.checked) {
@@ -64,35 +91,6 @@ toggleSwitch.addEventListener("change", function () {
   }
 });
 
-function openMenu() {
-  const menuHtml = `
-    <div class="modal-menu-content">
-      <button class="close-btn" onclick="closeMenu()">✖</button>
-      <a href="./index.html" class="home-link">Home</a>
-      <a href="./cart.html" class="cart-link">Shopping cart</a>
-      <button id="btnRegistrModal" class="registr">Sing Up<img src="./img/arrow_right_icon_125381.svg" alt="" class="arrow-right" /></button>
-      <button id="btnLogout" class="logout">Выйти</button>
-    </div>`;
-
-  window.instance = basicLightbox.create(menuHtml, {
-    onShow: (instance) => {
-      const btnRegistrModal = instance
-        .element()
-        .querySelector("#btnRegistrModal");
-      btnRegistrModal.addEventListener("click", () => {
-        createWindowRegistr();
-      });
-    },
-  });
-  instance.show();
-}
-
-
-
-function closeMenu() {
-  if (window.instance) instance.close();
-}
-
 // Function to Fetch Categories
 function fetchCategories() {
   return fetch(`https://books-backend.p.goit.global/books/category-list`).then(
@@ -107,8 +105,8 @@ function fetchCategories() {
 
 // Function to Fetch Books by Category
 function fetchBooksByCategory(category) {
-  return fetch(
-    `https://books-backend.p.goit.global/books/category?category=${encodeURIComponent(
+  return fetch(`
+    https://books-backend.p.goit.global/books/category?category=${encodeURIComponent(
       category
     )}`
   ).then((resp) => {
@@ -127,8 +125,8 @@ function createBookCard({ book_image, title, author, _id, apple_books_link }) {
       <img src="${book_image ? book_image : "./img/book.jpg"}" alt="${title}" width="190" />
       <h4>${title}</h4>
       <span><i>${author}</i></span>
-    </div>
-  `;
+    </div>`
+  ;
 }
 
 // Modify the handlerClick function to pull Apple Books link
@@ -171,13 +169,7 @@ function handlerClick(evt) {
       const instance = basicLightbox.create(
         `
         <div class="modal ${currentTheme}" id="modals-book">
-         <div class="container-cross">
-          <button type="button" onclick="instance.close()">
-            <img src="./img/cross.svg" alt="Close" width="20">
-          </button>
-        </div>
           <div class="cont-modal ${currentTheme}">
-         
            <div class="img-in-modal">
              <img src="${book.book_image}" alt="${book.title}">
            </div>
@@ -409,7 +401,7 @@ function renderAllCategories(categories) {
       })
       .catch((error) => {
         console.error(
-          `Error fetching books for category "${category.list_name}":`,
+          Error `fetching books for category "${category.list_name}"`,
           error
         );
       });
@@ -460,7 +452,7 @@ function handleCategoryClicks() {
           })
           .catch((error) => {
             console.error(
-              `Error fetching books for category "${selectedCategory}":`,
+              Error `fetching books for category "${selectedCategory}"`,
               error
             );
             bookListContainer.innerHTML = `<p>Error loading books for "${selectedCategory}". Please try again later.</p>`;
@@ -540,8 +532,8 @@ function createWindowRegistr() {
         Already have an account? <a href="#" id="switch-to-signin">Sign In</a>
         </p>
       </form>
-    </div>
-    `,
+    </div>`
+    ,
     {
       onShow: (instance) => {
         instance.element().style.backgroundColor = "rgb(79, 46, 232)";
@@ -584,8 +576,8 @@ function createSignInWindow() {
         Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a>
       </p>
       </form>
-    </div>
-    `,
+    </div>`
+    ,
     {
       onShow: (instance) => {
         instance.element().style.backgroundColor = "rgb(79, 46, 232)";
@@ -732,12 +724,6 @@ firebase.auth().onAuthStateChanged((user) => {
     addToCartBtn.classList.add("hidden"); //скрываем кнопку добавить в корзину если пользователь не зарегистрирован
   }
 });
-
-function toggleMenu() {
-  const navMenu = document.querySelector(".nav-menu");
-  navMenu.classList.toggle("active");
-}
-
 
 
 // Initial Function to Load and Render All Categories and Their Books

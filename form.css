@@ -30,6 +30,7 @@
     color: white;
     background-color: black;
     border: 3px solid black;
+    cursor: pointer;
 }
 
 .form-reg>.container-cross>button {

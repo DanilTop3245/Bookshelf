@@ -743,6 +743,7 @@ body.dark .cart-link {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    cursor: pointer;
 }
 
 .arrow-right {
@@ -835,7 +836,6 @@ body.dark .cart-link {
             /* Центрируем по вертикали */
             justify-content: center;
             /* Центрируем по горизонтали */
-            height: 70%;
             /* Задаем высоту на весь экран */
         }
     
