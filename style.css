@@ -776,7 +776,7 @@ body.dark .cart-link {
         align-items: center;
         height: auto;
     }
-    
+
     .switch {
         top: 0;
     }
@@ -829,30 +829,30 @@ body.dark .cart-link {
         overflow-y: scroll;
     }
 
-        .basicLightbox {
-            display: flex !important;
-            /* Убедимся, что используется flexbox */
-            align-items: center;
-            /* Центрируем по вертикали */
-            justify-content: center;
-            /* Центрируем по горизонтали */
-            /* Задаем высоту на весь экран */
-        }
-    
-        .basicLightbox .modal {
-            max-height: 100%;
-            background-color: white;
-            /* Цвет фона модалки */
-            border-radius: 8px;
-            /* Закругление углов */
-            padding: 20px;
-            /* Отступы внутри */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            /* Тень */
-            max-width: 80%;
-            margin: 0 auto;
-            
-        }
+    .basicLightbox {
+        display: flex !important;
+        /* Убедимся, что используется flexbox */
+        align-items: center;
+        /* Центрируем по вертикали */
+        justify-content: center;
+        /* Центрируем по горизонтали */
+        /* Задаем высоту на весь экран */
+    }
+
+    .basicLightbox .modal {
+        max-height: 100%;
+        background-color: white;
+        /* Цвет фона модалки */
+        border-radius: 8px;
+        /* Закругление углов */
+        padding: 20px;
+        /* Отступы внутри */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        /* Тень */
+        max-width: 80%;
+        margin: 0 auto;
+
+    }
 
     .registr {
         width: 335px;
@@ -866,7 +866,10 @@ body.dark .cart-link {
         text-align: center;
     }
 
-    .hl, .cl, .reg, .container-btn {
+    .hl,
+    .cl,
+    .reg,
+    .container-btn {
         display: none;
     }
 
@@ -875,41 +878,50 @@ body.dark .cart-link {
         font-size: 24px;
     }
 
-        /* Стили для модального меню на весь экран */
-        .basicLightbox .modal-menu-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100vw;
-            /* Полная ширина экрана */
-            height: 100vh;
-            /* Полная высота экрана */
-            background: linear-gradient(180deg, rgba(0, 45, 255, 1) 12%, rgb(218, 218, 218) 65%);
-            position: relative;
-        }
-    
-        /* Кнопка закрытия в правом верхнем углу */
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: white;
-        }
-    
-        .basicLightbox--visible .modal-menu-content a,
-        .basicLightbox--visible .modal-menu-content button {
-            color: white;
-            margin: 10px 0;
-            font-size: 18px;
-            text-decoration: none;
-            text-align: center;
-        }
+    /* Стили для модального меню на весь экран */
+    .basicLightbox .modal-menu-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        /* Полная ширина экрана */
+        height: 100vh;
+        /* Полная высота экрана */
+        background: linear-gradient(180deg, rgba(0, 45, 255, 1) 12%, rgb(218, 218, 218) 65%);
+        position: relative;
+    }
+
+    /* Кнопка закрытия в правом верхнем углу */
+    .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: white;
+    }
+
+    .basicLightbox--visible .modal-menu-content a,
+    .basicLightbox--visible .modal-menu-content button {
+        color: white;
+        margin: 10px 0;
+        font-size: 18px;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .modal.dark {
+        background-color: #1e1e24;
+        border: 2px solid white;
+        color: white;
+    }
+
+    .modal.light {
+        background-color: white;
+        border: 2px solid black;
+        color: black;
+    }
 }
-
-
-
