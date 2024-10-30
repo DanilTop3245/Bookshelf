@@ -26,9 +26,9 @@ function openMenu() {
   const menuHtml = `
     <div class="modal-menu-content">
       <button class="close-btn" id="closeBtn">✖</button>
-      <a href="./index.html" class="home-link hl2" id="home">Home</a>
-      <a href="./cart.html" class="cart-link cl2" id="cart">Shopping cart</a>
-      <button id="btnRegistrModal" class="registr">Sign Up<img src="./img/arrow_right_icon_125381.svg" alt="" class="arrow-right" /></button>
+      <a href="./index.html" class="home-link hl2 " id="home">Home</a>
+      <a href="./cart.html" class="cart-link cl2 " id="cart">Shopping cart</a>
+      <button id="btnRegistrModal" class="registr">Sign Up</button>
       <button id="btnLogout" class="logout2 hidden">Log Out</button>
     </div>`;
 
@@ -52,8 +52,8 @@ function openMenu() {
 
       const btnLogout = instance.element().querySelector("#btnLogout");
       btnLogout.addEventListener("click", handleLogout);
-      const homeLinks = document.querySelector(".hl2");
-      const shoppingCartLinks = document.querySelector(".cl2");
+      const homeLinks = instance.element().querySelector(".hl2");
+      const shoppingCartLinks = instance.element().querySelector(".cl2");
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           isUserLoggedIn = true;
@@ -66,7 +66,8 @@ function openMenu() {
           btnLogout.style.display = "none";
           btnRegistrModal.style.display = "block";
           homeLinks.style.display = "none"
-          shoppingCartLinks.style.display = "none"
+          homeLinks.style.display = "none";
+          shoppingCartLinks.style.display = "none";
         }
       });
     },
@@ -75,6 +76,8 @@ function openMenu() {
   instance.show(); // Показываем модальное окно
   window.instance = instance; // Сохраняем экземпляр модального окна для закрытия
 }
+
+
 
 function closeMenu() {
   if (window.instance) {

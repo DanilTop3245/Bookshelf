@@ -12,28 +12,62 @@ function getFromLocalStorage() {
 function openMenu() {
   const menuHtml = `
     <div class="modal-menu-content">
-      <button class="close-btn" onclick="closeMenu()">✖</button>
-      <a href="./index.html" class="home-link-2">Home</a>
-      <a href="./cart.html" class="cart-link-2">Shopping cart</a>
-      <button id="btnRegistrModal" class="registr">Sing Up<img src="./img/arrow_right_icon_125381.svg" alt="" class="arrow-right" /></button>
-      <button id="btnLogout" class="logout">Выйти</button>
+      <button class="close-btn" id="closeBtn">✖</button>
+      <a href="./index.html" class="home-link-2 hl2 " id="home">Home</a>
+      <a href="./cart.html" class="cart-link-2 cl2 " id="cart">Shopping cart</a>
+      <button id="btnRegistrModal" class="registr">Sign Up</button>
+      <button id="btnLogout" class="logout2 hidden">Log Out</button>
     </div>`;
 
-  window.instance = basicLightbox.create(menuHtml, {
+  const instance = basicLightbox.create(menuHtml, {
     onShow: (instance) => {
+      console.log("Menu opened");
+
+      // Обработчик для кнопки "Close"
+      const closeBtn = instance.element().querySelector("#closeBtn");
+      closeBtn.addEventListener("click", () => {
+        closeMenu(); // Закрыть меню при нажатии кнопки "Close"
+      });
+
       const btnRegistrModal = instance
         .element()
         .querySelector("#btnRegistrModal");
       btnRegistrModal.addEventListener("click", () => {
-        createWindowRegistr();
+        console.log("Sign Up button clicked");
+        createWindowRegistr(); // Вызываем окно регистрации
+      });
+
+      const btnLogout = instance.element().querySelector("#btnLogout");
+      btnLogout.addEventListener("click", handleLogout);
+      const homeLinks = instance.element().querySelector(".hl2");
+      const shoppingCartLinks = instance.element().querySelector(".cl2");
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          isUserLoggedIn = true;
+          btnRegistrModal.style.display = "none";
+          btnLogout.style.display = "block";
+          homeLinks.style.display = "block";
+          shoppingCartLinks.style.display = "block";
+        } else {
+          isUserLoggedIn = false;
+          btnLogout.style.display = "none";
+          btnRegistrModal.style.display = "block";
+          homeLinks.style.display = "none";
+          homeLinks.style.display = "none";
+          shoppingCartLinks.style.display = "none";
+        }
       });
     },
   });
-  instance.show();
+
+  instance.show(); // Показываем модальное окно
+  window.instance = instance; // Сохраняем экземпляр модального окна для закрытия
 }
 
 function closeMenu() {
-  if (window.instance) instance.close();
+  if (window.instance) {
+    window.instance.close(); // Закрываем модальное окно
+  }
 }
 
 // Функция для рендеринга списка покупок

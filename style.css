@@ -769,6 +769,10 @@ body.dark .cart-link {
     display: none;
 }
 
+body.dark .txt-remove {
+    color: white;
+}
+
 @media (max-width: 768px) {
     header {
         display: flex;

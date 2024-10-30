@@ -26,6 +26,11 @@ ul {
     padding: 0;
 }
 
+.containers {
+    display: flex;
+    flex-direction: row;
+}
+
 .book-item {
     display: flex;
     align-items: flex-start;
@@ -221,8 +226,8 @@ body.dark .book-info p {
         width: 305px;
     }
 
-    .uk-menu {
-        width: 78%;
+    .uk-menu-in-cart {
+        display: none;
     }
 
     .book-item {
