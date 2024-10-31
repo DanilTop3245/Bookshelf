@@ -122,6 +122,7 @@ function deleteBook(index) {
   shoppingList.splice(index, 1); // Удаляем книгу по индексу
   saveToLocalStorage(shoppingList); // Сохраняем обновленный список в localStorage
   renderShoppingList(); // Перерендериваем список
+  location.reload();
 }
 
 // Функции для работы с localStorage
@@ -249,79 +250,92 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Функция для инициализации пагинации
 function initializePagination() {
-  var div_num = document.querySelectorAll(".book-item");
-  var count = div_num.length; // всего записей (количество .book-item)
-  var cnt = 3; // сколько отображаем сначала
-  var cnt_page = Math.ceil(count / cnt); // кол-во страниц
-
-  // Элемент пагинатора
   var paginator = document.querySelector(".paginator");
 
-  // Если книг менее 4, скрываем пагинацию и показываем все элементы
-  if (count <= 3) {
-    paginator.style.display = "none";
-    div_num.forEach((item) => (item.style.display = "flex"));
-    return;
-  } else {
-    paginator.style.display = "block";
-  }
+  // Функция для обновления пагинации
+  function updatePagination() {
+    var div_num = document.querySelectorAll(".book-item"); // Получаем все книги
+    var count = div_num.length; // Общее количество записей
+    var cnt = 3; // Количество отображаемых книг на странице
+    var cnt_page = Math.ceil(count / cnt); // Количество страниц
 
-  // Выводим список страниц
-  var page = "";
-  for (var i = 0; i < cnt_page; i++) {
-    page +=
-      "<span data-page=" +
-      i * cnt +
-      ' id="page' +
-      (i + 1) +
-      '">' +
-      (i + 1) +
-      "</span>";
-  }
-  paginator.innerHTML = page;
+    // Скрываем пагинацию, если книг 3 или меньше
+    if (count <= cnt) {
+      paginator.style.display = "none"; // Скрываем пагинацию
+      // Также скрываем все книги, если их меньше 3
+      div_num.forEach((item) => {
+        item.style.display = "flex"; // Показываем все книги
+      });
+      return; // Выходим из функции
+    } else {
+      paginator.style.display = "flex"; // Показываем пагинацию
+    }
 
-  // Показываем первые записи {cnt}
-  for (var i = 0; i < div_num.length; i++) {
-    div_num[i].style.display = i < cnt ? "flex" : "none";
-  }
+    // Очищаем старые страницы
+    paginator.innerHTML = "";
 
-  // Активируем первую страницу по умолчанию
-  var main_page = document.getElementById("page1");
-  main_page.classList.add("paginator_active");
+    // Создаем кнопки пагинации
+    for (var i = 0; i < cnt_page; i++) {
+      var span = document.createElement("span");
+      span.dataset.page = i * cnt; // Устанавливаем номер страницы
+      span.id = "page" + (i + 1); // Уникальный ID для каждой страницы
+      span.textContent = i + 1; // Номер страницы
+      paginator.appendChild(span);
+    }
+
+    // Показываем первые записи
+    for (var i = 0; i < div_num.length; i++) {
+      div_num[i].style.display = i < cnt ? "flex" : "none"; // Показываем только первые книги
+    }
+
+    // Активируем первую страницу по умолчанию
+    var main_page = document.getElementById("page1");
+    if (main_page) {
+      main_page.classList.add("paginator_active");
+    }
+  }
 
   // Листаем страницы
-  paginator.addEventListener("click", pagination);
-
-  function pagination(event) {
+  paginator.addEventListener("click", function (event) {
     var target = event.target;
 
-    if (target.tagName.toLowerCase() !== "span") return;
+    if (target.tagName.toLowerCase() !== "span") return; // Проверяем, что кликнули на span
 
     var data_page = +target.dataset.page; // Получаем номер страницы
-    var num_ = target.id.substr(4); // Определяем номер страницы по id
 
     // Обновляем активную страницу
-    main_page.classList.remove("paginator_active");
-    main_page = document.getElementById("page" + num_);
-    main_page.classList.add("paginator_active");
+    document.querySelector(".paginator_active")?.classList.remove("paginator_active");
+    target.classList.add("paginator_active");
 
     // Скрываем все элементы
+    var div_num = document.querySelectorAll(".book-item");
     for (var i = 0; i < div_num.length; i++) {
       div_num[i].style.display = "none";
     }
 
     // Показываем нужные элементы в зависимости от страницы
-    for (var i = data_page; i < data_page + cnt; i++) {
+    for (var i = data_page; i < data_page + 3; i++) {
       if (i < div_num.length) {
-        div_num[i].style.display = "flex";
+        div_num[i].style.display = "flex"; // Показываем только те элементы, которые относятся к текущей странице
       }
     }
+  });
+
+  // Первоначальная инициализация пагинации
+  updatePagination();
+
+  // Отслеживание изменений в списке книг
+  const observer = new MutationObserver(updatePagination);
+  const bookListContainer = document.querySelector(".book-list-container"); // Контейнер, содержащий книги
+
+  if (bookListContainer) {
+    observer.observe(bookListContainer, { childList: true, subtree: true });
   }
 }
 
-
-// Вызываем функцию инициализации после загрузки DOM
+// Запускаем функцию при загрузке документа
 document.addEventListener("DOMContentLoaded", initializePagination);
+
 
 
 // Регистрация функции для открытия окна регистрации

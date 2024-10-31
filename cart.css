@@ -169,7 +169,7 @@ body.dark .book-info p {
 }
 
 /* Медиа-запросы для улучшения отзывчивости */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .paginator span {
         padding: 6px 12px;
         font-size: 14px;
@@ -182,7 +182,7 @@ body.dark .book-info p {
         font-size: 12px;
         margin: 0 4px;
     }
-}
+} */
 
 .empty-message {
     color: #888;
@@ -237,6 +237,27 @@ body.dark .book-info p {
     text-overflow: ellipsis;
     overflow-x: hidden;
     overflow-wrap: break-word;
+}
+.paginator {
+    display: flex;
+    justify-content: center;
+    /* Центрирование по горизонтали */
+    gap: 10px;
+    /* Расстояние между номерами страниц */
+    margin-top: 20px;
+    /* Отступ сверху */
+}
+
+.paginator span {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.paginator_active {
+    background-color: #007bff;
+    /* Стили для активной страницы */
+    color: #fff;
 }
 
 @media (max-width: 768px) {
