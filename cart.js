@@ -134,11 +134,37 @@ function saveToLocalStorage(shoppingList) {
 }
 
 
+
+document.addEventListener("DOMContentLoaded", function () {
+  const clearListBtn = document.getElementById("clear-list-btn");
+
+  // Проверка на существование кнопки
+  if (clearListBtn) {
+    clearListBtn.addEventListener("click", clearShoppingList);
+  } else {
+    console.warn("Кнопка очистки списка не найдена на странице.");
+  }
+});
+
 // Функция для очистки списка покупок
 function clearShoppingList() {
-  localStorage.removeItem("shoppingList");
-  renderShoppingList(); // Перерисовываем список после очистки
-  location.reload();
+  console.log("Кнопка очистки списка нажата"); // Сообщение для отладки
+
+  // Проверка, существует ли элемент в localStorage
+  if (localStorage.getItem("shoppingList") !== null) {
+    localStorage.removeItem("shoppingList"); // Удаление списка из localStorage
+    console.log("Список покупок успешно удален из localStorage");
+
+    // Перерисовываем список на странице
+    renderShoppingList();
+
+    // Небольшая задержка перед перезагрузкой страницы
+    setTimeout(() => {
+      location.reload();
+    }, 100); // Задержка в 100 мс для завершения очистки
+  } else {
+    console.warn("Список покупок уже пуст или не существует в localStorage");
+  }
 }
 
 const body = document.body;
@@ -223,7 +249,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Функция для инициализации пагинации
 function initializePagination() {
-  var count = document.querySelectorAll(".book-item").length; // всего записей (количество .book-item)
+  var div_num = document.querySelectorAll(".book-item");
+  var count = div_num.length; // всего записей (количество .book-item)
   var cnt = 3; // сколько отображаем сначала
   var cnt_page = Math.ceil(count / cnt); // кол-во страниц
 
@@ -244,14 +271,8 @@ function initializePagination() {
   paginator.innerHTML = page;
 
   // Показываем первые записи {cnt}
-  var div_num = document.querySelectorAll(".book-item");
-
   for (var i = 0; i < div_num.length; i++) {
-    if (i < cnt) {
-      div_num[i].style.display = "flex";
-    } else {
-      div_num[i].style.display = "none"; // Скрываем остальные элементы
-    }
+    div_num[i].style.display = i < cnt ? "flex" : "none";
   }
 
   // Активируем первую страницу по умолчанию
@@ -262,10 +283,8 @@ function initializePagination() {
   paginator.addEventListener("click", pagination);
 
   function pagination(event) {
-    var e = event || window.event;
-    var target = e.target;
+    var target = event.target;
 
-    // Проверяем, что кликнули на span
     if (target.tagName.toLowerCase() !== "span") return;
 
     var data_page = +target.dataset.page; // Получаем номер страницы
@@ -284,11 +303,15 @@ function initializePagination() {
     // Показываем нужные элементы в зависимости от страницы
     for (var i = data_page; i < data_page + cnt; i++) {
       if (i < div_num.length) {
-        div_num[i].style.display = "flex"; // Показываем только те элементы, которые относятся к текущей странице
+        div_num[i].style.display = "flex";
       }
     }
   }
 }
+
+// Вызываем функцию инициализации после загрузки DOM
+document.addEventListener("DOMContentLoaded", initializePagination);
+
 
 // Регистрация функции для открытия окна регистрации
 const signInButton = document.getElementById("btnRegistr");
