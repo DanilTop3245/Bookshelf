@@ -254,10 +254,20 @@ function initializePagination() {
   var cnt = 3; // сколько отображаем сначала
   var cnt_page = Math.ceil(count / cnt); // кол-во страниц
 
-  // Выводим список страниц
+  // Элемент пагинатора
   var paginator = document.querySelector(".paginator");
-  var page = "";
 
+  // Если книг менее 4, скрываем пагинацию и показываем все элементы
+  if (count <= 3) {
+    paginator.style.display = "none";
+    div_num.forEach((item) => (item.style.display = "flex"));
+    return;
+  } else {
+    paginator.style.display = "block";
+  }
+
+  // Выводим список страниц
+  var page = "";
   for (var i = 0; i < cnt_page; i++) {
     page +=
       "<span data-page=" +
@@ -308,6 +318,7 @@ function initializePagination() {
     }
   }
 }
+
 
 // Вызываем функцию инициализации после загрузки DOM
 document.addEventListener("DOMContentLoaded", initializePagination);
